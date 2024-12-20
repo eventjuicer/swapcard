@@ -1,16 +1,16 @@
 "use server"
 
-export async function getUser(id: string) {
+export async function getUser(token: string) {
 
 
-    const data = await fetch("https://api.eventjuicer.com/v1/extapi/participants", {
+    const request = await fetch(`https://api.eventjuicer.com/v1/extapi/participants/${token}`, {
         method: "GET",
         headers: {
             "x-token": `${process.env.EVENTJUICER_API_KEY}`
         }
     })
 
-    return {
-        name: "John Doe"
-    }
+    const data = await request.json()
+
+    return data?.data
 }

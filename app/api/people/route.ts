@@ -1,10 +1,21 @@
 import { gql } from '@apollo/client';
 import createApolloClient from '@/apollo-client'
 import { NextResponse, NextRequest } from 'next/server';
+import { getUser } from './getUser';
+
+
+
 
 export async function GET(req: NextRequest) {
   
-  
+  const token = req.nextUrl.searchParams.get("token")
+
+  const user = await getUser(token)
+
+  if(!user) {
+    return NextResponse.json({ error: 'User not found' }, { status: 404 });
+  }
+
   // Define the GraphQL mutation
   const IMPORT_EVENT_PEOPLE = gql`
    mutation importEventPeople($eventId: ID!, $data: [ImportEventPersonInput!]!) {

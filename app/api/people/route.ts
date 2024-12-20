@@ -1,9 +1,24 @@
-import { gql } from '@apollo/client';
-import createApolloClient from '@/apollo-client'
+
 import { NextResponse, NextRequest } from 'next/server';
+import createApolloClient from '@/apollo-client'
+import { IMPORT_EVENT_PEOPLE } from '@/swapcard/mutations';
 import { getUser } from './getUser';
+import { roleToGroupMapping } from '@/swapcard/roleToGroupMapping';
 
 
+const findGroupMapping = (roles: Array<string>) => {
+
+  const groupIds: Array<string> = [];
+
+  roles.forEach((role: string) => {
+    if(role in roleToGroupMapping) {
+      groupIds.push(roleToGroupMapping[role as keyof typeof roleToGroupMapping])
+    }
+  })
+
+  return groupIds
+
+}
 
 
 export async function GET(req: NextRequest) {
@@ -16,35 +31,8 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: 'User not found' }, { status: 404 });
   }
 
-
-  console.log(user)
-
-  // Define the GraphQL mutation
-  const IMPORT_EVENT_PEOPLE = gql`
-   mutation importEventPeople($eventId: ID!, $data: [ImportEventPersonInput!]!) {
-  importEventPeople(eventId: $eventId, validateOnly: false, data: $data) {
-    errors {
-      inputId
-      errorCode
-      message
-    }
-    results {
-      inputId
-      eventPerson {
-        id
-        email
-      }
-    }
-    eventPeopleCreated
-    eventPeopleUpdated
-  }
-}
-  `;
-
   const client = createApolloClient();
  
-
-  
 
 
 
@@ -67,16 +55,16 @@ export async function GET(req: NextRequest) {
                 "jobTitle": user.fields.position || "",
                 "organization": user.fields.cname || "",
                 "biography": user.fields.bio || "",
-                "websiteUrl": "https://www.tesla.com",
-                "photoUrl": "https://fakeimg.pl/300/picture.jpg",
+                "websiteUrl": "",
+                "photoUrl": "",
                 "mobilePhone": user.fields.phone || "",
 
-                "socialNetworks": [
-                  {
-                    "type": "LINKEDIN",
-                    "profile": "updatejohndoe"
-                  }
-                ],
+                // "socialNetworks": [
+                //   {
+                //     "type": "LINKEDIN",
+                //     "profile": "updatejohndoe"
+                //   }
+                // ],
                 "customFields": [
                   {
                     "groupId": "RmllbGREZWZpbml0aW9uXzc5Mjc1OA==",
@@ -88,9 +76,7 @@ export async function GET(req: NextRequest) {
             "actions": {
             "updateGroups": {
             "action": "ADD",
-            "groupIds": [
-              "RXZlbnRHcm91cF81OTA2NjM="
-            ]
+            "groupIds": findGroupMapping(user.roles)
             }}
       
       }]

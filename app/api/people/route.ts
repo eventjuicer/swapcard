@@ -16,6 +16,9 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: 'User not found' }, { status: 404 });
   }
 
+
+  console.log(user)
+
   // Define the GraphQL mutation
   const IMPORT_EVENT_PEOPLE = gql`
    mutation importEventPeople($eventId: ID!, $data: [ImportEventPersonInput!]!) {
@@ -58,12 +61,12 @@ export async function GET(req: NextRequest) {
               "clientId": "987654321",
               "update": {
                 "isUser": true,
-                "email": "test@test.com",
-                "firstName": "John",
-                "lastName": "Doe",
-                "jobTitle": "CEO",
-                "organization": "Tesla",
-                "biography": "Lorem ipsum dolor sit amet, odio prima pri te, id sanctus recteque deterruisset vel. Dico tractatos eam eu, dolor inciderint in est.",
+                "email": user.email,
+                "firstName": user.fields.fname,
+                "lastName": user.fields.lname,
+                "jobTitle": user.fields.position || "",
+                "organization": user.fields.cname || "",
+                "biography": user.fields.bio || "",
                 "websiteUrl": "https://www.tesla.com",
                 "photoUrl": "https://fakeimg.pl/300/picture.jpg",
                 "mobilePhone": "+1-541-754-3010",
@@ -74,12 +77,12 @@ export async function GET(req: NextRequest) {
                     "profile": "updatejohndoe"
                   }
                 ],
-                // "customFields": [
-                //   {
-                //     "groupId": "RXZlbnRQZW9wZEdyb3VwXzExMA==",
-                //     "action": "SET_VALUE",
-                //     "value": "Research & Development 1"
-                // }],
+                "customFields": [
+                  {
+                    "groupId": "RmllbGREZWZpbml0aW9uXzc5Mjc1OA==",
+                    "action": "SET_VALUE",
+                    "value": "day1-feb19"
+                }],
             }, 
 
             "actions": {

@@ -48,7 +48,7 @@ export async function GET(req: NextRequest) {
             {
               "clientId": user.id,
               "create": {
-                "isUser": true,
+                "isUser": false,
                 "email": user.email,
                 "firstName": user.fields.fname,
                 "lastName": user.fields.lname,

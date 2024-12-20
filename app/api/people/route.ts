@@ -46,7 +46,7 @@ export async function GET(req: NextRequest) {
           "eventId": "RXZlbnRfMjQ0NTIxNg==",
            "data": [
             {
-              "clientId": user.id,
+              "clientId": token,
               "create": {
                 "isUser": false,
                 "email": user.email,

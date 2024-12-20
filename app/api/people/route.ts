@@ -58,8 +58,8 @@ export async function GET(req: NextRequest) {
           "eventId": "RXZlbnRfMjQ0NTIxNg==",
            "data": [
             {
-              "clientId": "987654321",
-              "update": {
+              "clientId": user.id,
+              "create": {
                 "isUser": true,
                 "email": user.email,
                 "firstName": user.fields.fname,
@@ -69,7 +69,7 @@ export async function GET(req: NextRequest) {
                 "biography": user.fields.bio || "",
                 "websiteUrl": "https://www.tesla.com",
                 "photoUrl": "https://fakeimg.pl/300/picture.jpg",
-                "mobilePhone": "+1-541-754-3010",
+                "mobilePhone": user.fields.phone || "",
 
                 "socialNetworks": [
                   {

@@ -48,8 +48,8 @@ export async function GET(req: NextRequest) {
             {
               "clientId": token,
               "create": {
-                "isUser": false,
-                "email": user.email,
+                "isUser": true,
+                "email": "team+"+Date.now()+"@targiehandlu.com.pl",//user.email,
                 "firstName": user.fields.fname,
                 "lastName": user.fields.lname,
                 "jobTitle": user.fields.position || "",

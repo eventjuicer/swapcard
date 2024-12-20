@@ -49,7 +49,7 @@ export async function GET(req: NextRequest) {
               "clientId": token,
               "create": {
                 "isUser": true,
-                "email": "team+"+user.id+"@targiehandlu.com.pl",//user.email,
+                "email": user.email,
                 "firstName": user.fields.fname,
                 "lastName": user.fields.lname,
                 "jobTitle": user.fields.position || "",
